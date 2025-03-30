@@ -3,19 +3,40 @@ import React, { useState } from 'react';
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState("");
 
+  // Handle file selection
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleUpload = () => {
-    // For now, we’ll log the file. Later, integrate with your backend/AWS S3.
-    if (file) {
-      console.log('Uploading file:', file);
-      // TODO: Implement file upload functionality
-      alert(`Uploading ${file.name}`);
-    } else {
+  // Handle file upload by sending the file to the backend endpoint
+  const handleUpload = async () => {
+    if (!file) {
       alert('Please select a file first.');
+      return;
+    }
+
+    // Create a FormData object and append the file
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      console.log('Sending file upload request...');
+      const response = await fetch('http://localhost:9091/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const resultText = await response.text();
+      setUploadStatus(resultText);
+      console.log('Upload successful:', resultText);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      setUploadStatus("Error uploading file");
     }
   };
 
@@ -24,6 +45,7 @@ const UploadForm = () => {
       <h2>Upload Your Video</h2>
       <input type="file" accept="video/*" onChange={handleFileChange} />
       <button onClick={handleUpload} style={styles.uploadButton}>Upload</button>
+      {uploadStatus && <p>{uploadStatus}</p>}
     </div>
   );
 };
