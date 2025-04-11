@@ -1,0 +1,8 @@
+com\vit\video_sharing_backend\Main.class
+com\vit\video_sharing_backend\model\AuditAction.class
+com\vit\video_sharing_backend\model\VideoAsset.class
+com\vit\video_sharing_backend\service\MetadataHandler.class
+com\vit\video_sharing_backend\model\UploadAction.class
+com\vit\video_sharing_backend\service\AssetManager.class
+com\vit\video_sharing_backend\model\UpdateAction.class
+com\vit\video_sharing_backend\util\LocalizationUtil.class
